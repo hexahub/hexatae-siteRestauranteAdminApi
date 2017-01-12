@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RestauranteSiteAdmin.Application.Interfaces;
+using RestauranteSiteAdmin.Application.AppServices;
+using RestauranteSiteAdmin.Domain.Interfaces;
+using RestauranteSiteAdmin.Domain.Services;
+using RestauranteSiteAdmin.Data.Repositories;
 
 namespace RestauranteSiteAdmin.API
 {
@@ -27,13 +28,28 @@ namespace RestauranteSiteAdmin.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+            
             services.AddMvc();
+
+            services.AddSingleton<IItemCardapioAppService, ItemCardapioAppService>();
+            services.AddSingleton<IItemCardapioService, ItemCardapioService>();
+            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors("CorsPolicy");
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

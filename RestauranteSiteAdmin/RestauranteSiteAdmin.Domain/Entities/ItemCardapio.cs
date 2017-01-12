@@ -1,19 +1,22 @@
 ﻿using MongoDB.Bson;
 using RestauranteSiteAdmin.Domain.Enum;
 using System;
+using System.Xml.Serialization;
 
 namespace RestauranteSiteAdmin.Domain.Entities
 {
     public class ItemCardapio
     {
-        public ObjectId ItemCardapioId { get; private set; }
+        [XmlIgnore]
+        public ObjectId _id { get; set; }
+        public ObjectId ItemCardapioId { get { return _id; } set { _id = value; } }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public ETipoRefeicao Refeicao { get; private set; }
 
         public ItemCardapio(string itemCardapioId, string titulo, string descricao, ETipoRefeicao refeicao)
         {
-            ItemCardapioId = ObjectId.Parse(itemCardapioId);
+            ItemCardapioId = itemCardapioId == null ? ObjectId.GenerateNewId() : ObjectId.Parse(itemCardapioId);
             DefinirTitulo(titulo);
             DefinirDescricao(descricao);
             Refeicao = refeicao;
@@ -28,8 +31,8 @@ namespace RestauranteSiteAdmin.Domain.Entities
 
         private void DefinirDescricao(Untrusted<string> descricao)
             => Descricao = descricao.Validate(
-                a => a.Length >= 5 && a.Length <= 60,
+                a => a.Length >= 5 && a.Length <= 100,
                 a => a,
-                a => { throw new ArgumentException("Título deve ter entre 5 e 60 caracteres"); });
+                a => { throw new ArgumentException("Título deve ter entre 5 e 100 caracteres"); });
     }
 }
