@@ -14,26 +14,26 @@ namespace RestauranteSiteAdmin.Domain.Services
             _itemCardapioRepository = itemCardapioRepository;
         }
 
-        public Task<bool> CadastrarNovoItemCardapio(ItemCardapio itemCardapio)
-            => _itemCardapioRepository.Insert(itemCardapio);
+        public async Task<bool> CadastrarNovoItemCardapio(ItemCardapio itemCardapio)
+            => await _itemCardapioRepository.Insert(itemCardapio);
 
-        public Task<bool> EditarItemCardapio(ItemCardapio itemCardapio)
-            => _itemCardapioRepository.Update(itemCardapio.ItemCardapioId.ToString(), itemCardapio);
+        public async Task<bool> EditarItemCardapio(ItemCardapio itemCardapio)
+            => await _itemCardapioRepository.Update(itemCardapio.ItemCardapioId.ToString(), itemCardapio);
 
-        public Task<bool> ExcluirItemCardapio(string id)
-            => _itemCardapioRepository.Delete(id);
+        public async Task<bool> ExcluirItemCardapio(string id)
+            => await _itemCardapioRepository.Delete(id);
 
-        public Task<IEnumerable<ItemCardapio>> ListarItensCardapio()
-            => _itemCardapioRepository.GetAll();
+        public async Task<IEnumerable<ItemCardapio>> ListarItensCardapio()
+            => await _itemCardapioRepository.GetAll();
 
-        public Task<IEnumerable<ItemCardapio>> ObterItensCardapioPorDescricao(string descricao)
-            => _itemCardapioRepository.Find(i => i.Descricao.Contains(descricao));
+        public async Task<IEnumerable<ItemCardapio>> ObterItensCardapioPorDescricao(string descricao)
+            => await _itemCardapioRepository.Find(i => i.Descricao.Contains(descricao));
 
-        public Task<IEnumerable<ItemCardapio>> ObterItensCardapioPorRefeicao(int refeicao)
-            => _itemCardapioRepository.Find(i => (int)i.Refeicao == refeicao);
+        public async Task<IEnumerable<ItemCardapio>> ObterItensCardapioPorRefeicao(int refeicao)
+            => await _itemCardapioRepository.Find(i => (int)i.Refeicao == refeicao);
 
-        public Task<IEnumerable<ItemCardapio>> ObterItensCardapioPorTitulo(string titulo)
-            => _itemCardapioRepository.Find(i => i.Titulo.Contains(titulo));
+        public async Task<IEnumerable<ItemCardapio>> ObterItensCardapioPorTitulo(string titulo)
+            => await _itemCardapioRepository.Find(i => i.Titulo.Contains(titulo));
 
         public void Dispose()
         {

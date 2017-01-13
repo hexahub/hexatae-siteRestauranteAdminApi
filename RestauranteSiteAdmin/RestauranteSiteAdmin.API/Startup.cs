@@ -42,6 +42,10 @@ namespace RestauranteSiteAdmin.API
 
             services.AddSingleton<IItemCardapioAppService, ItemCardapioAppService>();
             services.AddSingleton<IItemCardapioService, ItemCardapioService>();
+
+            services.AddSingleton<IUsuarioAppService, UsuarioAppService>();
+            services.AddSingleton<IUsuarioService, UsuarioService>();
+
             services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
         }
 
